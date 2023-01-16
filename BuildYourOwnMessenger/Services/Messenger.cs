@@ -9,6 +9,16 @@ namespace BuildYourOwnMessenger.Services
     {
         ConcurrentDictionary<Type, SynchronizedCollection<Subscription>> _Subscriptions = new();
         ConcurrentDictionary<Type, object> _CurrentState = new();
+        static Messenger _default = new();
+
+        /// <summary>
+        /// The globally-shared messenger.
+        /// </summary>
+        public static Messenger Default
+        {
+            get => _default;
+            set => _default = value ?? throw new ArgumentNullException(nameof(value));
+        }
 
         public void Send<TMessage>(TMessage message)
         {

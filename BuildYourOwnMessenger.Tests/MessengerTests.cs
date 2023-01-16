@@ -103,5 +103,17 @@ namespace BuildYourOwnMessenger.Tests
 
             fakeObserver.Verify(x => x.CallMeWithMessage(message), Times.Once());
         }
+
+        [Fact]
+        public void DefaultMessenger_NoticeSubscribers_WhenUseDefaultGlobalSharedMessenger()
+        {
+            var fakeObserver = new Mock<IFakeObserver>();
+            var message = new FakeMessage(string.Empty);
+            Messenger.Default.Subscribe<FakeMessage>(fakeObserver.Object, fakeObserver.Object.CallMeWithMessage);
+
+            Messenger.Default.Send(message);
+
+            fakeObserver.Verify(x => x.CallMeWithMessage(message), Times.Once());
+        }
     }
 }
